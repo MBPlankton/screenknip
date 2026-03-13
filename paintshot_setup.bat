@@ -1277,10 +1277,15 @@ REM Maak start.bat
 echo @echo off>"%USERPROFILE%\PaintShot\start.bat"
 echo start "" pythonw "%%~dp0paintshot.pyw">>"%USERPROFILE%\PaintShot\start.bat"
 
+REM Maak paintshot.ico aan
+echo AAABAAEAEBAAAAAAIAAlAwAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAAQAAAAEAgGAAAAH/P/YQAAAuxJREFUeJx1U11oE1kU/s69k8y0ySQmjbrW+lPqD9KCloKyVMEHXYuy++CjUK0oioKPIvjgoyCor6KoFP9A3JfqWh+s4sIusrBU17q02katWmlMsElNJs7MnTkySVqo6IH7dO75zved7xwCgI4DIymL63s+l9yUrxyAmAAKUgAYzIKIHTbVcLMpcu70wu4hLqavjl5pn6C2femFtvIGjEiybUmDAgkJAqMKEDwGUwia/Q7l3BCymffAgt9gKTH2RTe3aoq9Hj2SbDt3WHc7WxsEfhhxlIuL6ffbfyA7dtv5L9u14s8CH9IKJTW/o8nzO1ujAsVBiZHDQKoLWH6iVjiDyaiLJrh7Vzemnw1m3+w9dKuxcacSRKQAv/rr401g8h/g3VmwZ80WM1cleUrB832KxSJWb9Pu9f2pbUs1MAgkq00WHwHsLDi5BSSjKLsl2/GVHdfjMZ99CCGIhADiiebRJRtXZ6zEsDaHpt4EXnM5GB27vksjU6NFjUJWQ51lNkYXUZDwmSHiSejzlS+HC1QDmAmG77mQMkz9r+/h3NMLSSlk4ufGDdSzag+uP76BY9uPAqRpoagpfC/PcwACpUKGkLEy6P3/apUyiP7NDmLk5Qv89eRvdLXvwNp485f82Gi9jKRojm3BsAKe559dxLQzDV3qkFJC2QpD6ecIh8M43X8G0DWpm3F4rj3rEQAPggTujz/A/fEBGNJA2S3DhUJuIgen7EAPG3gwNIC+4bvhBctb4JSKrAVrxxXyEkW3iDuv7mJZbBlCIlSFVR48T8FMmQgEJSNJ9D28Zn9622oYZhwag6Soyq90PbXpJCTJYIFndIF/mdWIwEa9PMW/Hp9kEvOkFjO4MJ4DPU1b3rqWemjiG2O+E+lSg5bRDapDJk/r979smnLpUTSWaGn5iUHB3APDqXZQlS2sUawN+nUGyOfzH8w62ly52Y4Dz5eWvNjBQslJ+b5bKf9eZwp0SYlYxJiqh33xyaWVY18B+qw7Is5E9uoAAAAASUVORK5CYII=>"%TEMP%\ps_ico.b64"
+certutil -decode "%TEMP%\ps_ico.b64" "%USERPROFILE%\PaintShot\paintshot.ico" >nul 2>&1
+del "%TEMP%\ps_ico.b64" >nul 2>&1
+
 REM Maak bureaublad snelkoppeling via PowerShell
 for /f "delims=" %%P in ('where pythonw 2^>nul') do set "PYTHONW_PATH=%%P"
 if not defined PYTHONW_PATH set "PYTHONW_PATH=pythonw.exe"
-powershell -Command "$ws = New-Object -ComObject WScript.Shell; $sc = $ws.CreateShortcut([System.IO.Path]::Combine([Environment]::GetFolderPath('Desktop'), 'PaintShot.lnk')); $sc.TargetPath = '%PYTHONW_PATH%'; $sc.Arguments = [char]34 + [System.IO.Path]::Combine($env:USERPROFILE, 'PaintShot\paintshot.pyw') + [char]34; $sc.WorkingDirectory = [System.IO.Path]::Combine($env:USERPROFILE, 'PaintShot'); $sc.IconLocation = 'mspaint.exe,0'; $sc.Save()"
+powershell -Command "$ws = New-Object -ComObject WScript.Shell; $sc = $ws.CreateShortcut([System.IO.Path]::Combine([Environment]::GetFolderPath('Desktop'), 'PaintShot.lnk')); $sc.TargetPath = '%PYTHONW_PATH%'; $sc.Arguments = [char]34 + [System.IO.Path]::Combine($env:USERPROFILE, 'PaintShot\paintshot.pyw') + [char]34; $sc.WorkingDirectory = [System.IO.Path]::Combine($env:USERPROFILE, 'PaintShot'); $sc.IconLocation = [System.IO.Path]::Combine($env:USERPROFILE, 'PaintShot\paintshot.ico') + ',0'; $sc.Save()"
 echo        Snelkoppeling aangemaakt op bureaublad.
 
 echo.
