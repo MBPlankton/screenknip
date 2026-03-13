@@ -1278,7 +1278,9 @@ echo @echo off>"%USERPROFILE%\PaintShot\start.bat"
 echo start "" pythonw "%%~dp0paintshot.pyw">>"%USERPROFILE%\PaintShot\start.bat"
 
 REM Maak bureaublad snelkoppeling via PowerShell
-powershell -Command "$ws = New-Object -ComObject WScript.Shell; $sc = $ws.CreateShortcut([System.IO.Path]::Combine([Environment]::GetFolderPath('Desktop'), 'PaintShot.lnk')); $sc.TargetPath = [System.IO.Path]::Combine($env:USERPROFILE, 'PaintShot\start.bat'); $sc.WorkingDirectory = [System.IO.Path]::Combine($env:USERPROFILE, 'PaintShot'); $sc.IconLocation = 'mspaint.exe,0'; $sc.Save()"
+for /f "delims=" %%P in ('where pythonw 2^>nul') do set "PYTHONW_PATH=%%P"
+if not defined PYTHONW_PATH set "PYTHONW_PATH=pythonw.exe"
+powershell -Command "$ws = New-Object -ComObject WScript.Shell; $sc = $ws.CreateShortcut([System.IO.Path]::Combine([Environment]::GetFolderPath('Desktop'), 'PaintShot.lnk')); $sc.TargetPath = '%PYTHONW_PATH%'; $sc.Arguments = [char]34 + [System.IO.Path]::Combine($env:USERPROFILE, 'PaintShot\paintshot.pyw') + [char]34; $sc.WorkingDirectory = [System.IO.Path]::Combine($env:USERPROFILE, 'PaintShot'); $sc.IconLocation = 'mspaint.exe,0'; $sc.Save()"
 echo        Snelkoppeling aangemaakt op bureaublad.
 
 echo.
